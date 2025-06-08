@@ -1,0 +1,92 @@
+import os
+
+# Завдання 1: Простий текстовий редактор
+def create_text_file():
+    filename = input("Введіть ім'я файлу (без розширення): ") + ".txt"
+    print("Введіть текст (порожній рядок — завершення введення):")
+    lines = []
+    while True:
+        line = input()
+        if line == "":
+            break
+        lines.append(line)
+
+    with open(filename, "w", encoding="utf-8") as file:
+        for line in lines:
+            file.write(line + "\n")
+
+    print(f"\nФайл '{filename}' створено. Вміст файлу:")
+    with open(filename, "r", encoding="utf-8") as file:
+        print(file.read())
+
+    return filename
+
+
+# Завдання 2: Аналіз вмісту файлу
+def analyze_file(filename):
+    with open(filename, "r", encoding="utf-8") as file:
+        text = file.read()
+
+    lines = text.splitlines()
+    words = text.split()
+    characters = list(text)
+
+    print("\nАналіз файлу:")
+    print(f"Кількість рядків: {len(lines)}")
+    print(f"Кількість слів: {len(words)}")
+    print(f"Кількість символів: {len(characters)}")
+
+
+# Завдання 3: Пошук і заміна
+def search_and_replace():
+    filename = input("Введіть ім'я файлу для відкриття (без розширення): ") + ".txt"
+
+    if not os.path.exists(filename):
+        print("Файл не знайдено.")
+        return
+
+    with open(filename, "r", encoding="utf-8") as file:
+        text = file.read()
+
+    find_word = input("Введіть слово або фразу для пошуку: ")
+    replace_word = input("Введіть слово або фразу для заміни: ")
+    new_text = text.replace(find_word, replace_word)
+
+    new_filename = input("Введіть ім'я нового файлу для збереження результату (без розширення): ") + ".txt"
+    with open(new_filename, "w", encoding="utf-8") as file:
+        file.write(new_text)
+
+    print(f"Заміна виконана. Новий файл збережено як '{new_filename}'.")
+
+
+# Меню для запуску
+def main():
+    while True:
+        print("\n=== Практична робота №13 ===")
+        print("1. Простий текстовий редактор")
+        print("2. Аналіз вмісту файлу")
+        print("3. Пошук і заміна")
+        print("4. Вихід")
+
+        choice = input("Оберіть опцію (1-4): ")
+
+        if choice == "1":
+            global last_created_file
+            last_created_file = create_text_file()
+        elif choice == "2":
+            fname = input("Введіть ім'я файлу для аналізу (без розширення): ") + ".txt"
+            if os.path.exists(fname):
+                analyze_file(fname)
+            else:
+                print("Файл не знайдено.")
+        elif choice == "3":
+            search_and_replace()
+        elif choice == "4":
+            print("Завершення програми.")
+            break
+        else:
+            print("Невірний вибір. Спробуйте ще раз.")
+
+
+if __name__ == "__main__":
+    main()
